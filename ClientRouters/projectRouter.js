@@ -131,6 +131,7 @@ router.post('/:id/action',(req,res)=>{
     }
 })
 
+//Edit action by specifyin action ID
 router.put('/:id/edit-action',(req,res)=>{
     editAction = req.body;
     ActiontId = req.params.id;
@@ -158,6 +159,26 @@ router.put('/:id/edit-action',(req,res)=>{
 })
 
 
+//Delete specific action by providing action ID
+router.delete('/:id/delete-action',(req,res)=>{
+    const acToDelete = req.params.id;
+
+    actions.remove(acToDelete)
+    .then(count =>{
+        if(count > 0){
+            res.status(200)
+            .json({message: "This action was succesfully deleted"})
+        } else {
+            res.status(404)
+            .json({message:'The post with the specified ID does not exist.'})
+        }
+    })
+    .catch(error=>{
+        console.log(error);
+        res.status(500)
+        .json({error:"The post could not be removed."})
+    })
+})
 
 module.exports=router;
 
