@@ -19,6 +19,22 @@ router.get('/', (req,res)=>{
         });
 })
 
+router.post('/', (req,res)=>{
+
+    const newProject=req.body;
+    projects.insert(newProject)
+    .then(project=>{
+        res.status(201)
+        .json(project);
+    })
+    .catch(err => {
+        console.log("Server Error", err);
+        res.status(500)
+        .json({error: "There was an error while saving the project to the database" });
+    });
+
+})
+
 
 
 module.exports=router;
