@@ -105,6 +105,32 @@ router.get('/:id/actions',(req,res)=>{
     })
 })
 
+//Post New action by specifying project id first
+router.post('/:id/action',(req,res)=>{
+    newAction = req.body;
+    ProjectId = req.params.id;
+    
+    if(!newAction){
+        res.status(400)
+        .json({ errorMessage: "Please provide details for the action" })
+    } else {
+        projects.getProjectActions(ProjectId)
+        .then(project=>{
+            newAction.project_id = ProjectId
+            actions.insert(newAction)
+            .then(action=>{
+                if(action.description.length > 128){
+                    res.status(404)
+                    .json({errorMessage:"Description has to be less than 128 characters"})
+                } else {
+                    res.status(201)
+                    .json(action)
+                }
+            })
+        })
+    }
+})
+
 
 
 module.exports=router;
