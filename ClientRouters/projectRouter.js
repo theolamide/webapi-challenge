@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.use(express.json());
 
+//Get all Projects
 router.get('/', (req,res)=>{
 
     projects.get()
@@ -20,6 +21,8 @@ router.get('/', (req,res)=>{
         });
 })
 
+
+//Post new Project
 router.post('/', (req,res)=>{
     const newProject = req.body;
 
@@ -36,15 +39,17 @@ router.post('/', (req,res)=>{
 
 })
 
+
+//Edit specific Project
 router.put('/:id',(req,res)=>{
     const changes = req.body;
-    const PostId = req.params.id;
+    const ProjectId = req.params.id;
 
     if(!changes.name || !changes.description){
         res.status(404)
         .json({message: "Please specify changes you want made"})
     } else {
-        projects.update(PostId,changes)
+        projects.update(ProjectId,changes)
         .then(project=>{
             if(project){
                 res.status(200)
@@ -62,6 +67,8 @@ router.put('/:id',(req,res)=>{
     }
 })
 
+
+//Delete specific Project
 router.delete('/:id',(req,res)=>{
     const toDelete = req.params.id;
 
@@ -79,6 +86,22 @@ router.delete('/:id',(req,res)=>{
         console.log(error);
         res.status(500)
         .json({error:"The post could not be removed."})
+    })
+})
+
+//Get all Project actions by providing specific ID of the Project
+router.get('/:id/actions',(req,res)=>{
+    const ProjectId = req.params.id;
+
+    projects.getProjectActions(ProjectId)
+    .then(actions=> {
+        res.status(200)
+        .json(actions)
+    })
+    .catch(error=>{
+        console.log(error);
+        res.status(500)
+        .json({message:"The actions could not be retrieved."})
     })
 })
 
