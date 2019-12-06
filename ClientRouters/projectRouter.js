@@ -182,15 +182,4 @@ router.delete('/:id/delete-action',(req,res)=>{
 
 module.exports=router;
 
-// if(projects.getProjectActions(ProjectId) < 1){
-//     res.status(404)
-//     .json({message: "There are no actions to edit in the project"})
-// } else {
-//     projects.getProjectActions(ProjectId)
-//     .then(project=>{
-//         editAction.project_id = ProjectId
-        
-
-//         })
-//     })
-// }
+//MVP complete
