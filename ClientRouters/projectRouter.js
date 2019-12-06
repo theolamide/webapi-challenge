@@ -131,6 +131,45 @@ router.post('/:id/action',(req,res)=>{
     }
 })
 
+router.put('/:id/edit-action',(req,res)=>{
+    editAction = req.body;
+    ActiontId = req.params.id;
+
+    if(!editAction.project_id || !editAction.description || !editAction.notes){
+        res.status(404)
+        .json({message: "You're missing some required fields. Please to to see if Project ID, description, and notes are populated."})
+    } else {
+        actions.update(ActiontId,editAction)
+        .then(action=>{
+            if(action){
+                res.status(200)
+                .json(action)
+            } else {
+                res.status(404)
+                .json({message: "The action with the specified ID does not exist."})
+            }
+        })
+        .catch(error=>{
+            console.log(error);
+            res.status(500)
+            .json({error: "The project information could not be modified."});
+        });
+    }
+})
+
 
 
 module.exports=router;
+
+// if(projects.getProjectActions(ProjectId) < 1){
+//     res.status(404)
+//     .json({message: "There are no actions to edit in the project"})
+// } else {
+//     projects.getProjectActions(ProjectId)
+//     .then(project=>{
+//         editAction.project_id = ProjectId
+        
+
+//         })
+//     })
+// }
